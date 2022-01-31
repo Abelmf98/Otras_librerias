@@ -1,0 +1,12 @@
+body{
+  margin: 0;
+  font-family: Verdana;
+  font-style: italic;
+  /* background-color: steelblue; */
+  background-image: url("https://blutick-bucket.s3.eu-west-2.amazonaws.com/2020/06/Blutick-mathematics-background.png");
+}
+
+h3{
+  font-style: normal;
+  text-align: center;
+}
