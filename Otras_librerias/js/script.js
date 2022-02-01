@@ -1,5 +1,5 @@
 /**
-* @file mathjax.js
+* @file script.js
 * @author Abel Mansilla Felipe <amansillafelipe.guadalupe@alumnado.fundacionloyola.net>
 * @license GPLV3
 */
@@ -9,13 +9,14 @@
 window.onload = iniciar()
 
 function iniciar(){
-  fetch('histograma.json')
+  fetch('histograma.json') //llamamos al archivo json
     .then(respuesta => respuesta.json())
     .then(objeto => {
-      console.log(objeto)
       let datos = parsear (objeto)
       grafico(datos)
     })
+
+    iniciar2() //funcion para mostrar la segunda gráfica
 }
 
 
@@ -23,9 +24,8 @@ function parsear(objeto){
   let datos = []
   for(let i = 0; i < objeto.length; i++){
     let dato = {}
-    dato.corx = objeto[i].MetaData[2].Nombre
-    dato.valor = objeto[i].Data[0].Valor
-    // datos.paro = ...
+    dato.corx = objeto[i].MetaData[2].Nombre //pasamos los valores a las coordenadas correspondientes
+    dato.valor = objeto[i].Data[0].Valor //pasamos los valores a las coordenadas correspondientes
     datos.push(dato)
 
   }
@@ -34,10 +34,9 @@ function parsear(objeto){
 
 function grafico(datos){
   new Morris.Bar({
-    // ID of the element in which to draw the chart.
+    //hacemos mención al ID que nos mostrará el gráfico
     element: 'myfirstchart',
-    // Chart data records -- each entry in this array corresponds to a point on
-    // the chart.
+    //llamamos a los datos que leemos del archivo json
     data: datos,
     //   { year: '2008', value: 20 },
     //   { year: '2009', value: 10 },
@@ -45,12 +44,45 @@ function grafico(datos){
     //   { year: '2011', value: 5 },
     //   { year: '2012', value: 20 }
     // ],
-    // The name of the data record attribute that contains x-values.
+    // guardamos la variable de x en el array
     xkey: 'corx',
-    // A list of names of data record attributes that contain y-values.
+    // guardamos la variable de y en el array
     ykeys: ['valor'],
-    // Labels for the ykeys -- will be displayed when you hover over the
-    // chart.
+    // guardamos el nombre
     labels: ['valor']
+  });
+}
+
+function iniciar2(){
+  fetch('tarta.json') //llamamos al archivo json
+    .then(respuesta1 => respuesta1.json())
+    .then(objeto1 => {
+      let datos1 = parsear2(objeto1)
+      console.log(datos1)
+      grafico2(datos1)
+
+    })
+}
+
+
+function parsear2(objeto1){
+  let datos1 = []
+  for(let i = 0; i < objeto1.length; i++){
+    let dato1 = {}
+    dato1.label = objeto1[i].Resultados //pasamos los valores a las coordenadas correspondientes
+    dato1.value = objeto1[i].field2 //pasamos los valores a las coordenadas correspondientes
+    datos1.push(dato1)
+
+  }
+  return datos1
+}
+
+function grafico2(datos1){
+    Morris.Donut({
+    element: 'tarta', //hacemos mención al ID que nos mostrará el gráfico
+    data: datos1, //llamamos a los datos que leemos del archivo json
+    formatter: function (x) { return x + "%"}
+  }).on('click', function(i, row){
+  console.log(i, row);
   });
 }
